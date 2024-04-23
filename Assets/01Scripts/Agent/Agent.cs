@@ -6,7 +6,7 @@ public abstract class Agent : MonoBehaviour
 {
     #region COMPONENTS
     public Rigidbody RB { get; protected set; }
-    public Animation Animation { get; protected set; }
+    public Animator Animator { get; protected set; }
     public SpriteRenderer SpriteRenderer { get; protected set; }
     public Collider Collider { get; protected set; }
     #endregion
@@ -17,7 +17,7 @@ public abstract class Agent : MonoBehaviour
         Collider = GetComponent<Collider>();
 
         Transform visualTransform = transform.Find("Visual");
-        Animation = visualTransform.GetComponent<Animation>();
+        Animator = visualTransform.GetComponent<Animator>();
         SpriteRenderer = visualTransform.GetComponent<SpriteRenderer>();
     }
 
