@@ -29,4 +29,15 @@ public abstract class PlayerState
     {
         _player.Animator.SetBool(_animationBoolHash, value: false);
     }
+
+    // 이 밑으로 두 개의 함수는 어째서인지 추가되지 않았었어 
+    public virtual void UpdateState()
+    {
+        _player.Animator.SetFloat(_yVelocityHash, _rb.velocity.y);
+    }
+
+    public virtual void AnimationFinishTrigger()
+    {
+        _triggerCall = true;
+    }
 }

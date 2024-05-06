@@ -12,8 +12,10 @@ public class InputHandler : ScriptableObject, PlayerActions.IInputActionActions
     #endregion
 
     #region INPUT VALUE SECTION
-    public float InputX { get; private set; }
-    public float InputY { get; private set;}
+    // public float InputX { get; private set; }
+    // public float InputY { get; private set;}
+
+    public Vector3 MovementDir { get; private set; }
     #endregion
 
     private PlayerActions _playerActions;
@@ -31,7 +33,10 @@ public class InputHandler : ScriptableObject, PlayerActions.IInputActionActions
 
     public void OnMovement(InputAction.CallbackContext context)
     {
-        InputX = context.ReadValue<float>();
-        InputY = context.ReadValue<float>();
+        // InputX = context.ReadValue<float>();
+        // InputY = context.ReadValue<float>();
+
+        MovementDir = context.ReadValue<Vector3>();
+        
     }
 }
