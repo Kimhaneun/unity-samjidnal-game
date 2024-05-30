@@ -37,6 +37,5 @@ public class InputHandler : ScriptableObject, PlayerActions.IInputActionActions
         // InputY = context.ReadValue<float>();
 
         MovementDir = context.ReadValue<Vector3>();
-        
     }
 }

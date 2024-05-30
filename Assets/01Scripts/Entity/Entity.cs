@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public abstract class Entity : MonoBehaviour
 {
@@ -13,7 +14,13 @@ public abstract class Entity : MonoBehaviour
     public Collider Collider { get; protected set; }
     #endregion
 
-    public int FacingDiraction { get; protected set; }
+    // public int FacingDiraction { get; protected set; }
+    // -- 
+    #region STATE PARAMETERS
+    public bool IsFacingRight { get; protected set; }
+    public bool IsDashing { get; protected set; }
+    #endregion
+    // -- 
 
     public bool CanStateChangeable { get; protected set; } = true;
 
@@ -27,6 +34,13 @@ public abstract class Entity : MonoBehaviour
         SpriteRenderer = visualTransform.GetComponent<SpriteRenderer>();
     }
 
+    // ---
+    protected virtual void Start()
+    {
+        IsFacingRight = true;
+    }
+    // --- 
+
     // Attack, Die, Delay 등을 구현 하기도 하는데 아직은 구현하지 말자
     #region DELAY CALLBACK COROUTINE
     public Coroutine StartDelayCallback(float delayTime, Action Callback)
@@ -35,11 +49,19 @@ public abstract class Entity : MonoBehaviour
     }
     #endregion
 
-    // 여기에 속도를 제어하는 코드를 만들자.
     #region VELOCITY CONTROL
     public void SetVelocity(float x, float y, float z, bool doNotTurn = false)
     {
         RB.velocity = new Vector3(x, y, z);
+
+        // ---
+        if (!doNotTurn)
+        {
+
+            CheckDirectionToFace(x);
+
+        }
+        // ---
     }
 
     public void StopImmediately(bool withAxisY, bool withAxisZ)
@@ -60,6 +82,22 @@ public abstract class Entity : MonoBehaviour
         yield return new WaitForSeconds(delayTime);
         callback?.Invoke();
     }
+
+    // ---
+    public virtual void CheckDirectionToFace(float x)
+    {
+        bool isMovingRight = x > Mathf.Epsilon;
+        if (isMovingRight != IsFacingRight)
+            Turn();
+    }
+
+    public virtual void Turn()
+    {
+        float yRotation = IsFacingRight ? 180f : 0f;
+        transform.rotation = Quaternion.Euler(transform.rotation.x, yRotation, transform.rotation.z);
+        IsFacingRight = !IsFacingRight;
+    }
+    // ---
 
     public abstract void Attack();
 }
