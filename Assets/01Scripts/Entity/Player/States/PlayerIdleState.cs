@@ -20,7 +20,7 @@ public class PlayerIdleState : PlayerState
         base.UpdateState();
         Vector3 movementDir = _player.PlayerInput.MovementDir;
 
-        if(Mathf.Abs(movementDir.x) > Mathf.Epsilon)
+        if (Mathf.Abs(movementDir.x) > Mathf.Epsilon || Mathf.Abs(movementDir.z) > Mathf.Epsilon)
         {
             _stateMachine.ChangeState(PlayerStateEnum.Movement);
         }

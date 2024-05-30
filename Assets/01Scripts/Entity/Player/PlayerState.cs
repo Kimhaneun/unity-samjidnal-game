@@ -21,7 +21,7 @@ public abstract class PlayerState
     // State Enter
     public virtual void Enter()
     {
-        _player.Animator.SetBool(_animationBoolHash, value: false);
+        _player.Animator.SetBool(_animationBoolHash, value: true);
     }
 
     // State Exit

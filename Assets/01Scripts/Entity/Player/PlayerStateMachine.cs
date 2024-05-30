@@ -20,7 +20,6 @@ public class PlayerStateMachine
     public PlayerStateMachine()
     {
         stateDictionary = new Dictionary<PlayerStateEnum, PlayerState>();
-
     }
 
     public void Initialize(PlayerStateEnum startState, Player player)
