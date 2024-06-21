@@ -9,6 +9,9 @@ public class InputHandler : ScriptableObject, PlayerActions.IInputActionActions
 {
     #region INPUT EVENT SETION
     // public event Action newEvent;
+    public event Action JumpEvent;
+    // public event Action DashEvent;
+    public event Action PrimaryAttackEvent;
     #endregion
 
     #region INPUT VALUE SECTION
@@ -37,5 +40,24 @@ public class InputHandler : ScriptableObject, PlayerActions.IInputActionActions
         // InputY = context.ReadValue<float>();
 
         MovementDir = context.ReadValue<Vector3>();
+
+        if (float.IsNaN(MovementDir.x) || float.IsNaN(MovementDir.y) || float.IsNaN(MovementDir.z))
+        {
+            MovementDir = Vector3.zero;
+        }
+    }
+
+    public void OnJump(InputAction.CallbackContext context)
+    {
+        if(context.performed)
+            JumpEvent?.Invoke();
+    }
+
+    public void OnPrimaryAttack(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            PrimaryAttackEvent?.Invoke();
+        }
     }
 }

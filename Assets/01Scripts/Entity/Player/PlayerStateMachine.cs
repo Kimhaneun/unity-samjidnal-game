@@ -2,14 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum PlayerStateEnum
-{
-    Idle,
-    Movement
-    // Attack
-    // Dash
-}
-
 public class PlayerStateMachine
 {
     public PlayerState CurrentState { get; private set; }

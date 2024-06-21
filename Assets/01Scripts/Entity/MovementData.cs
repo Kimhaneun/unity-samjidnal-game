@@ -24,18 +24,18 @@ public class MovementData : ScriptableObject
     [Space(20)]
 
     [Header("Run")]
-    public float targetRunSpeed;
+    // public float targetRunSpeed;
 
-    //public float runMaxSpeed;
-    //public float runAcceleration; 
-    //[HideInInspector] public float runAccelAmount; 
-    //public float runDecceleration; 
-    //[HideInInspector] public float runDeccelAmount; 
-    //[Space(5)]
-    //[Range(0f, 1)] public float accelInAir; 
-    //[Range(0f, 1)] public float deccelInAir;
-    //[Space(5)]
-    //public bool doConserveMomentum = true;
+    public float runMaxSpeed;
+    public float runAcceleration;
+    [HideInInspector] public float runAccelAmount;
+    public float runDecceleration;
+    [HideInInspector] public float runDeccelAmount;
+    [Space(5)]
+    [Range(0f, 1)] public float accelInAir;
+    [Range(0f, 1)] public float deccelInAir;
+    [Space(5)]
+    public bool doConserveMomentum = true;
 
     [Space(20)]
 
@@ -92,14 +92,14 @@ public class MovementData : ScriptableObject
 
         gravityScale = gravityStrength / Physics2D.gravity.y;
 
-        //runAccelAmount = (50 * runAcceleration) / runMaxSpeed;
-        //runDeccelAmount = (50 * runDecceleration) / runMaxSpeed;
+        runAccelAmount = (50 * runAcceleration) / runMaxSpeed;
+        runDeccelAmount = (50 * runDecceleration) / runMaxSpeed;
 
         jumpForce = Mathf.Abs(gravityStrength) * jumpTimeToApex;
 
         #region Variable Ranges
-        //runAcceleration = Mathf.Clamp(runAcceleration, 0.01f, runMaxSpeed);
-        //runDecceleration = Mathf.Clamp(runDecceleration, 0.01f, runMaxSpeed);
+        runAcceleration = Mathf.Clamp(runAcceleration, 0.01f, runMaxSpeed);
+        runDecceleration = Mathf.Clamp(runDecceleration, 0.01f, runMaxSpeed);
         #endregion
     }
 }

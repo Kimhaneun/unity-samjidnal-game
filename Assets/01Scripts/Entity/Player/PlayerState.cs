@@ -4,7 +4,6 @@ public abstract class PlayerState
 {
     protected PlayerStateMachine _stateMachine;
     protected Player _player;
-    protected Rigidbody _rb;
 
     protected int _animationBoolHash;
     protected readonly int _yVelocityHash = Animator.StringToHash(name: "yVelocity");
@@ -15,12 +14,13 @@ public abstract class PlayerState
         _player = player;
         _stateMachine = playerStateMachine;
         _animationBoolHash = Animator.StringToHash(animationBoolName);
-        _rb = _player.RB;
     }
 
     // State Enter
     public virtual void Enter()
     {
+        // triggerCall을 초기화 해 주어야 해 
+        _triggerCall = false;
         _player.Animator.SetBool(_animationBoolHash, value: true);
     }
 
@@ -30,10 +30,9 @@ public abstract class PlayerState
         _player.Animator.SetBool(_animationBoolHash, value: false);
     }
 
-    // 이 밑으로 두 개의 함수는 어째서인지 추가되지 않았었어 
     public virtual void UpdateState()
     {
-        _player.Animator.SetFloat(_yVelocityHash, _rb.velocity.y);
+        // _player.Animator.SetFloat(_yVelocityHash, _player.RB.velocity.y);
     }
 
     public virtual void AnimationFinishTrigger()

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class PlayerIdleState : PlayerState
+public class PlayerIdleState : PlayerGroundState
 {
     public PlayerIdleState(Player player, PlayerStateMachine playerStateMachine, string animationBoolName) : base(player, playerStateMachine, animationBoolName)
     {
@@ -22,7 +22,7 @@ public class PlayerIdleState : PlayerState
 
         if (Mathf.Abs(movementDir.x) > Mathf.Epsilon || Mathf.Abs(movementDir.z) > Mathf.Epsilon)
         {
-            _stateMachine.ChangeState(PlayerStateEnum.Movement);
+            _stateMachine.ChangeState(PlayerStateEnum.Run);
         }
     }
 }
