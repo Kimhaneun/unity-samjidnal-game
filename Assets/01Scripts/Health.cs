@@ -44,4 +44,16 @@ public class Health : MonoBehaviour, IDamageble
             OnDeathEvent?.Invoke();
         }
     }
+
+    //public void DamageFlashing()
+    //{
+    //    throw new System.NotImplementedException();
+    //}
+
+    //public void Die()
+    //{
+    //    throw new System.NotImplementedException();
+    //}
+
+    // private void ApplyKnockback(Vector3 hitDirection, Vector3 constantForceDirection, float inputDirection);
 }

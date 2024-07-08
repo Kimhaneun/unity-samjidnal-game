@@ -5,6 +5,11 @@ using UnityEngine;
 [CreateAssetMenu(menuName ="SO/Entity/MovementData")]
 public class MovementData : ScriptableObject
 {
+    // 이후 클래스를 통해 상속 받게 해 관리?
+    // 아니면 또 다른 SO를 통해 관리?
+
+    // 커스텀 윈도우 통해 SO를 관리할 필요 있을까? 고민 해 보자.
+
     [Header("Gravity")]
     [HideInInspector] public float gravityStrength; 
     [HideInInspector] public float gravityScale; 
@@ -17,6 +22,9 @@ public class MovementData : ScriptableObject
     public float maxFastFallSpeed;
 
     [Space(20)]
+
+    [Header("Run")]
+    // public float targetRunSpeed;
 
     public float runMaxSpeed;
     public float runAcceleration;

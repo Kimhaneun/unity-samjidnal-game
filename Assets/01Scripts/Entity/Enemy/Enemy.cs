@@ -17,6 +17,8 @@ public abstract class Enemy : Entity
     private float _defaultJumpForce;
     private float _defaultDashSpeed;
 
+    // public인데 private으로 바꾸어 주었어 나중에 필요하면 바꿔줘
+    // Transform은 private으로 해도 되
     [SerializeField] private Transform _chaseDistanceCheckPoint;
     [SerializeField] public float chaseDistance;
     [SerializeField] private Transform _attackDistanceCheckPoint;
@@ -30,6 +32,7 @@ public abstract class Enemy : Entity
 
     protected Collider[] _enemyCheckCollider;
 
+    // const로 바꾸어 보자
     private int _enemyCount = 1;
 
     protected Collider[] _testCollider;
@@ -63,11 +66,13 @@ public abstract class Enemy : Entity
         return Physics.Raycast(transform.position, direction, distance, _obstacleLayer);
     }
 
+    // --
     public virtual Collider Test()
     {
         int cnt = Physics.OverlapBoxNonAlloc(_attackDistanceCheckPoint.position, attackDistance * 0.5f, _testCollider, quaternion.identity, _playerLayer);
         return cnt >= 1 ? _enemyCheckCollider[0] : null;
     }
+    // --
 
     public abstract void AnimationFinishTrigger();
 

@@ -1,29 +1,30 @@
-using Cinemachine;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
 
 public class CameraManagement : MonoSingleton<CameraManagement>
 {
-    protected CameraManagement() { }
+    protected CameraManagement() { } // 외부에서 인스턴스 생성을 제한하고 싱글톤 패턴을 유지하기 위해 사용
 
     [SerializeField] private CinemachineVirtualCamera[] _allVirtualCameras;
 
     [Header("Controls for lerping the Y Damping during player jump/fall")]
-    [SerializeField] private float _fallPanAmount;
-    [SerializeField] private float _fallYPanTime;
-    public float fallSpeedYDampingChangeThreshold;
-
+    [SerializeField] private float _fallPanAmount; // 낙하 중 카메라의 수직 이동을 감쇠하는 양
+    [SerializeField] private float _fallYPanTime; // 감쇠 지속 시간, 값은 Y 댐핑이 얼마 동안 변경될지 제어
+    public float fallSpeedYDampingChangeThreshold; // 낙하 속도가 일정 임계값을 넘으면 Y 댐핑을 변경하는 데 사용되는 임계값
+                                                    // 낙하 속도가 언제 Y 댐핑을 변경할지 결정
     [Space(5)]
-    [SerializeField] private float _normYPanAmount;
+    [SerializeField] private float _normYPanAmount; // 일반적인(낙하 중이 아닐 때) Y 댐핑 값
+                                                    // 낙하 동작 중이 아닐 때 카메라 동작을 정의
 
+    public bool IsLerpingYDamping { get; private set; } // 댐핑(Damping) 값을 변경하는 동작 중인지 여부
+    public bool LerpedFromPlayerFalling { get; set; } // 플레이어의 낙하 동작에서 댐핑 값을 변경했는지 여부
+                                                      // 낙하 동작 중인 플레이어에게 영향을 주었음을 나타냄
 
-    public bool IsLerpingYDamping { get; private set; }
-    public bool LerpedFromPlayerFalling { get; set; }
-
-
-    private CinemachineVirtualCamera _currentCamera;
-    private CinemachineFramingTransposer _framingTransposer;
-
+    private CinemachineVirtualCamera _currentCamera; // 현재 활성화된 CinemachineVirtualCamera 오브젝트를 나타내는 변수
+    private CinemachineFramingTransposer _framingTransposer; // 현재 카메라의 프레임 구성을 나타내는 변수
+                                                             // 프레임 구성은 카메라 시야와 추적을 조절하기 위해 사용
 
     private Vector3 _startingTrackedObjectOffset;
 
@@ -115,64 +116,64 @@ public class CameraManagement : MonoSingleton<CameraManagement>
     #endregion
 
     #region PAN CAMERA
-    // public void PanCameraOnContanct(float panDistance, float panTime, PanDirectionEnum panDirection, bool panToStartingPos)
-    // {
-    //     StartCoroutine(PanCamera(panDistance, panTime, panDirection, panToStartingPos));
-    // }
+    public void PanCameraOnContanct(float panDistance, float panTime, PanDirectionEnum panDirection, bool panToStartingPos)
+    {
+        StartCoroutine(PanCamera(panDistance, panTime, panDirection, panToStartingPos));
+    }
 
-    //private IEnumerator PanCamera(float panDistance, float panTime, PanDirectionEnum panDirection, bool panToStartingPos)
-    //// 이동할 거리, 이동하는데 걸리는 시간, 이동 방향, 시작 위치로 돌아갈까?
-    //{
-    //    Vector3 endPos = Vector3.zero;
-    //    Vector3 startingPos = Vector3.zero;
+    private IEnumerator PanCamera(float panDistance, float panTime, PanDirectionEnum panDirection, bool panToStartingPos)
+    // 이동할 거리, 이동하는데 걸리는 시간, 이동 방향, 시작 위치로 돌아갈까?
+    {
+        Vector3 endPos = Vector3.zero;
+        Vector3 startingPos = Vector3.zero;
 
-    //    // handle pan from trigger
-    //    if (!panToStartingPos) // 카메라가 이동하는 경우
-    //    {
-    //        // set the direction and distance
-    //        switch (panDirection) // 이동 방향 설정
-    //        {
-    //            case PanDirectionEnum.Up:
-    //                endPos = Vector3.up;
-    //                break;
-    //            case PanDirectionEnum.Down:
-    //                endPos = Vector3.down;
-    //                break;
-    //            case PanDirectionEnum.Left:
-    //                endPos = Vector3.right;
-    //                break;
-    //            case PanDirectionEnum.Right:
-    //                endPos = Vector3.left;
-    //                break;
-    //            default:
-    //                break;
-    //        }
-    //        endPos *= panDistance; // endPos를 panDistance만큼 확장
+        // handle pan from trigger
+        if (!panToStartingPos) // 카메라가 이동하는 경우
+        {
+            // set the direction and distance
+            switch (panDirection) // 이동 방향 설정
+            {
+                case PanDirectionEnum.Up:
+                    endPos = Vector3.up;
+                    break;
+                case PanDirectionEnum.Down:
+                    endPos = Vector3.down;
+                    break;
+                case PanDirectionEnum.Left:
+                    endPos = Vector3.right;
+                    break;
+                case PanDirectionEnum.Right:
+                    endPos = Vector3.left;
+                    break;
+                default:
+                    break;
+            }
+            endPos *= panDistance; // endPos를 panDistance만큼 확장
 
-    //        startingPos = _startingTrackedObjectOffset;
+            startingPos = _startingTrackedObjectOffset;
 
-    //        endPos += startingPos;
-    //    }
+            endPos += startingPos;
+        }
 
-    //    // handle the pan back to starting position
-    //    else // 시작 위치로 돌아가는 경우
-    //    {
-    //        startingPos = _framingTransposer.m_TrackedObjectOffset;
-    //        endPos = _startingTrackedObjectOffset;
-    //    }
+        // handle the pan back to starting position
+        else // 시작 위치로 돌아가는 경우
+        {
+            startingPos = _framingTransposer.m_TrackedObjectOffset;
+            endPos = _startingTrackedObjectOffset;
+        }
 
-    //    // handle the actual panning of the camera
-    //    float elapsedTime = 0f;
-    //    while (elapsedTime < panTime)
-    //    {
-    //        elapsedTime += Time.deltaTime;
+        // handle the actual panning of the camera
+        float elapsedTime = 0f;
+        while (elapsedTime < panTime)
+        {
+            elapsedTime += Time.deltaTime;
 
-    //        Vector3 panLerp = Vector3.Lerp(startingPos, endPos, (elapsedTime / panTime));
-    //        _framingTransposer.m_TrackedObjectOffset = panLerp;
+            Vector3 panLerp = Vector3.Lerp(startingPos, endPos, (elapsedTime / panTime));
+            _framingTransposer.m_TrackedObjectOffset = panLerp;
 
-    //        yield return null;
-    //    }
-    //}
+            yield return null;
+        }
+    }
     #endregion
 
     #region SWAP CAMERAS

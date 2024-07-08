@@ -22,6 +22,7 @@ public class BaekunWaitingState : EnemyState<BaekunStateEnum>
         if (_enemy.IsObstacleInLine(direction.magnitude, direction.normalized) == false)
         {
             _enemy.targetTransform = target.transform;
+            // 원래는 발견 상태로 넘어가야 하는데 지금은 잠시 생략한다.
             _stateMachine.ChangeState(BaekunStateEnum.Chase);
         }
     }

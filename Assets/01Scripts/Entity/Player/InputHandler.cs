@@ -8,11 +8,16 @@ using UnityEngine.InputSystem;
 public class InputHandler : ScriptableObject, PlayerActions.IInputActionActions
 {
     #region INPUT EVENT SETION
+    // public event Action newEvent;
     public event Action JumpEvent;
+    // public event Action DashEvent;
     public event Action PrimaryAttackEvent;
     #endregion
 
     #region INPUT VALUE SECTION
+    // public float InputX { get; private set; }
+    // public float InputY { get; private set;}
+
     public Vector3 MovementDir { get; private set; }
     #endregion
 
@@ -31,6 +36,9 @@ public class InputHandler : ScriptableObject, PlayerActions.IInputActionActions
 
     public void OnMovement(InputAction.CallbackContext context)
     {
+        // InputX = context.ReadValue<float>();
+        // InputY = context.ReadValue<float>();
+
         MovementDir = context.ReadValue<Vector3>();
 
         if (float.IsNaN(MovementDir.x) || float.IsNaN(MovementDir.y) || float.IsNaN(MovementDir.z))

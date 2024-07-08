@@ -6,6 +6,8 @@ public class PlayerJumpState : PlayerState
 {
     public PlayerJumpState(Player player, PlayerStateMachine playerStateMachine, string animationBoolName) : base(player, playerStateMachine, animationBoolName)
     {
+        // 점프는 한 번만?
+        // 일단 한 번으로 만들어 보고 아님 이 단으로 만들자
     }
 
     public override void Enter()
