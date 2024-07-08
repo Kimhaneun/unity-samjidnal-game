@@ -19,7 +19,6 @@ public abstract class PlayerState
     // State Enter
     public virtual void Enter()
     {
-        // triggerCall을 초기화 해 주어야 해 
         _triggerCall = false;
         _player.Animator.SetBool(_animationBoolHash, value: true);
     }
@@ -32,7 +31,6 @@ public abstract class PlayerState
 
     public virtual void UpdateState()
     {
-        // _player.Animator.SetFloat(_yVelocityHash, _player.RB.velocity.y);
     }
 
     public virtual void AnimationFinishTrigger()

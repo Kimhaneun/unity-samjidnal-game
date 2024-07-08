@@ -2,9 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
-using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
-using static UnityEngine.UI.GridLayoutGroup;
 
 [CreateAssetMenu(menuName = "SO/Stat")]
 public class EntityStat : ScriptableObject
@@ -38,7 +36,7 @@ public class EntityStat : ScriptableObject
 
         Type entityStatType = typeof(EntityStat);
 
-        foreach(StatTypeEnum statTypeEnum in Enum.GetValues(typeof(StatTypeEnum)))
+        foreach (StatTypeEnum statTypeEnum in Enum.GetValues(typeof(StatTypeEnum)))
         {
             try
             {

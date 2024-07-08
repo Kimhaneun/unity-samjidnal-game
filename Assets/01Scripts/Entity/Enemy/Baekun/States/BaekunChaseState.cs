@@ -30,7 +30,6 @@ public class BaekunChaseState : EnemyState<BaekunStateEnum>
         if (_enemyMovement.NavMeshAgent.enabled)
             _targetDestination = _enemyMovement.NavMeshAgent.destination;
 
-        // 새 목적지 설정
         float distance = (_targetDestination - _enemy.targetTransform.position).magnitude;
         float test = Mathf.Abs(Mathf.Sin(_targetDestination.x)) - _enemy.targetTransform.position.x;
         if (test > CHASE_UPDATE_DISTANCE)

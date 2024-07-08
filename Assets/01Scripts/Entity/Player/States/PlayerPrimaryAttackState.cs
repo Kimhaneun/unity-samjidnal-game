@@ -31,9 +31,6 @@ public class PlayerPrimaryAttackState : PlayerState
         Vector3 movementDir = _player.PlayerInput.MovementDir;
         Vector3 attackMovementPower = _player.attackData.attackMovement[_comboCounter];
 
-        // ¼öÁ¤ÇØÁà
-        // _player.SetVelocity(movementDir.x * Mathf.Abs(attackMovementPower.x), movementDir.y, movementDir.z * Mathf.Abs(attackMovementPower.z));
-
         float delayTime = 0.2f;
         _delayCoroutine = _player.StartDelayCallback(delayTime, () => _player.StopImmediately(false, false));
     }

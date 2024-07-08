@@ -1,8 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.InputSystem.iOS;
 
 public class EnemyMovement : MonoBehaviour, IMovement
 {
@@ -26,11 +23,8 @@ public class EnemyMovement : MonoBehaviour, IMovement
 
     private void Update()
     {
-        // 지금은 그냥 모든 상태에서 Rotation을 false로 한다.
-        // 변경할 상황이 생기면 추격 상태에 진입할 때 false, 빠져나올 때 true로 한다.
         _navMeshAgent.updateRotation = false;
 
-        // 코드 좀 더럽다 이거 메서드로 빼야 하나 아오
         bool doNotTurn = false;
         if (!doNotTurn)
             CheckDirectionToFace(_navMeshAgent.desiredVelocity.x);
@@ -84,7 +78,7 @@ public class EnemyMovement : MonoBehaviour, IMovement
         //else
         //    RB.velocity = new Vector3(RB.velocity.x, 0, 0);
 
-         _navMeshAgent.isStopped = true;
+        _navMeshAgent.isStopped = true;
     }
 
     public void SetJump()

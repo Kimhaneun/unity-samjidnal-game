@@ -1,10 +1,5 @@
 using System;
-using System.Diagnostics;
-using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.iOS;
-using static UnityEditor.Experimental.GraphView.GraphView;
 using Debug = UnityEngine.Debug;
 
 public enum PlayerStateEnum
@@ -15,19 +10,11 @@ public enum PlayerStateEnum
     Fall,
     PrimaryAttack,
     Ground
-    // Dash
 }
 
 public class Player : Entity
 {
-    // SO를 관리하는 SO 또는 Class를 만들어서 
-    // [field: SerializeField] public MovementData movementData { get; protected set; }
     [field: SerializeField] public AttackData attackData { get; protected set; }
-
-    // 나머지는 더 필요하면 그 때 사용하고...
-    //private float _defaultRunSpeed;
-    //private float _defaultJumpForce;
-    //private float _defaultDashSpeed;
 
     private Vector3[] _attackMovement;
 
@@ -61,30 +48,14 @@ public class Player : Entity
     protected override void Start()
     {
         StateMachine.Initialize(PlayerStateEnum.Idle, player: this);
-
-        //_defaultRunSpeed = movementData.runMaxSpeed;
-        //_defaultJumpForce = movementData.jumpForce;
-        //_defaultDashSpeed = movementData.dashSpeed;
     }
-
-    //protected override void Start()
-    //{
-    //    base.Start();
-    //    StateMachine.Initialize(PlayerStateEnum.Idle, player: this);
-
-    //    _defaultRunSpeed = movementData.targetRunSpeed;
-    //    _defaultJumpForce = movementData.jumpForce;
-    //    _defaultDashSpeed = movementData.dashSpeed;
-
-    //    _attackMovement = attackData.attackMovement;
-    //}
 
     protected void Update()
     {
         StateMachine.CurrentState.UpdateState();
     }
 
-    public override void Attack() 
+    public override void Attack()
     {
         bool result = DamageCaster.IsCastDamage();
     }
@@ -92,6 +63,4 @@ public class Player : Entity
     public override void Death()
     {
     }
-
-    // public void AnimationFinishTrigger() => StateMachine.CurrentState.AnimationFinishTrigger();
 }

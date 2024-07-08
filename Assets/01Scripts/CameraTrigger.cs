@@ -25,8 +25,8 @@ public class CameraTrigger : MonoBehaviour
         {
             // pan the camera
             // Move the camera when the player reaches the point
-            CameraManagement.Instance.PanCameraOnContanct(customInspectorObjects.panDistance,
-                customInspectorObjects.panTime, customInspectorObjects.panDirection, false);
+            // CameraManagement.Instance.PanCameraOnContanct(customInspectorObjects.panDistance,
+            //     customInspectorObjects.panTime, customInspectorObjects.panDirection, false);
         }
     }
 
@@ -45,15 +45,15 @@ public class CameraTrigger : MonoBehaviour
             if (customInspectorObjects.panCamerOnContact)
             {
                 // pan the camera
-                CameraManagement.Instance.PanCameraOnContanct(customInspectorObjects.panDistance,
-                    customInspectorObjects.panTime, customInspectorObjects.panDirection, true);
+                // CameraManagement.Instance.PanCameraOnContanct(customInspectorObjects.panDistance,
+                //     customInspectorObjects.panTime, customInspectorObjects.panDirection, true);
             }
         }
     }
 }
 
 [System.Serializable]
-public class CustomInspectorObjects // 이 클래스는 인스펙터(Inspector) 창에서 해당 변수들을 편집할 수 있도록 하는 데 사용
+public class CustomInspectorObjects 
 {
     public bool swapCameras;
     public bool panCamerOnContact;
@@ -66,7 +66,7 @@ public class CustomInspectorObjects // 이 클래스는 인스펙터(Inspector) 창에서 해
     [HideInInspector] public float panTime = 0.35f;
 }
 
-public enum PanDirectionEnum // enum: 열거형
+public enum PanDirectionEnum 
 {
     // Camera movement direction
     Up,
@@ -86,7 +86,7 @@ public class MyScriptEditor : Editor
         CameraTrigger = (CameraTrigger)target;
     }
 
-    public override void OnInspectorGUI() //Inspector 창에 커스텀 UI 요소를 그리고 필드 및 속성을 편집하는 데 사용
+    public override void OnInspectorGUI() 
     {
         DrawDefaultInspector();
 
