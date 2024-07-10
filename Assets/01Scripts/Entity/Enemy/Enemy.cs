@@ -7,6 +7,7 @@ using UnityEngine;
 
 public abstract class Enemy : Entity
 {
+    public INavigationable Navigationable { get; private set; }
     [field: SerializeField] public MovementData movementData { get; protected set; }
     [field: SerializeField] public AttackData attackData { get; protected set; }
 
@@ -40,6 +41,7 @@ public abstract class Enemy : Entity
     protected override void Awake()
     {
         base.Awake();
+        Navigationable = GetComponent<INavigationable>();
         _enemyCheckCollider = new Collider[_enemyCount];
 
         _testCollider = new Collider[_enemyCount];

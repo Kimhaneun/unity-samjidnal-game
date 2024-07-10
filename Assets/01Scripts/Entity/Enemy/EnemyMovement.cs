@@ -4,10 +4,10 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.InputSystem.iOS;
 
-public class EnemyMovement : MonoBehaviour, IMovement
+public class EnemyMovement : MonoBehaviour, IMovement, INavigationable
 {
     [field: SerializeField] public MovementData movementData { get; protected set; }
-    public Vector3 Velocity { get; }
+    // public Vector3 Velocity { get; }
 
     public NavMeshAgent NavMeshAgent => _navMeshAgent;
 
@@ -60,7 +60,7 @@ public class EnemyMovement : MonoBehaviour, IMovement
         _navMeshAgent.SetDestination(destination);
     }
 
-    public void SetVelocity(float x, float y, float z, bool doNotTurn = false) { }
+    // public void SetVelocity(float x, float y, float z, bool doNotTurn = false) { }
 
     public void StopImmediately()
     {

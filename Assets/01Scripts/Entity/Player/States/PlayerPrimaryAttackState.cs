@@ -31,6 +31,8 @@ public class PlayerPrimaryAttackState : PlayerState
         Vector3 movementDir = _player.PlayerInput.MovementDir;
         Vector3 attackMovementPower = _player.attackData.attackMovement[_comboCounter];
 
+        _player.DirectMoveable.SetVelocity(movementDir.x, movementDir.y, movementDir.z, false); // 방금 수정했어
+
         // 수정해줘
         // _player.SetVelocity(movementDir.x * Mathf.Abs(attackMovementPower.x), movementDir.y, movementDir.z * Mathf.Abs(attackMovementPower.z));
 

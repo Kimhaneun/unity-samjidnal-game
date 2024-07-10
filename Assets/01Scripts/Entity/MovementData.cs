@@ -17,9 +17,6 @@ public class MovementData : ScriptableObject
     [Space(5)]
     public float fallGravityMult;
     public float maxFallSpeed; 
-    [Space(5)]
-    public float fastFallGravityMult; 
-    public float maxFastFallSpeed;
 
     [Space(20)]
 
@@ -90,7 +87,7 @@ public class MovementData : ScriptableObject
     {
         gravityStrength = -(2 * jumpHeight) / (jumpTimeToApex * jumpTimeToApex);
 
-        gravityScale = gravityStrength / Physics2D.gravity.y;
+        gravityScale = gravityStrength / Physics.gravity.y;
 
         runAccelAmount = (50 * runAcceleration) / runMaxSpeed;
         runDeccelAmount = (50 * runDecceleration) / runMaxSpeed;

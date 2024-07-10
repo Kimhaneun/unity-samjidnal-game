@@ -13,7 +13,7 @@ public class PlayerRunState : PlayerGroundState
         base.UpdateState();
         Vector3 movementDir = _player.PlayerInput.MovementDir;
         // _player.SetVelocity(movementDir.x * _player.movementData.targetRunSpeed, _player.RB.velocity.y, movementDir.z * _player.movementData.targetRunSpeed);
-        _player.Movement.SetVelocity(movementDir.x, movementDir.y, movementDir.z);
+        _player.DirectMoveable.SetVelocity(movementDir.x, movementDir.y, movementDir.z);
 
         if (Mathf.Abs(movementDir.x) < Mathf.Epsilon && Mathf.Abs(movementDir.z) < Mathf.Epsilon)
         {

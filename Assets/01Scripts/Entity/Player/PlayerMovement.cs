@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.InputSystem.Android;
 
-public class PlayerMovement : MonoBehaviour, IMovement
+public class PlayerMovement : MonoBehaviour, IMovement, IDirectMoveable
 {
     #region COMPONENTS
     public Rigidbody RB { get; protected set; }
@@ -43,8 +45,8 @@ public class PlayerMovement : MonoBehaviour, IMovement
     [field: SerializeField] public MovementData movementData { get; protected set; }
     private Entity _entity;
 
-    private Vector3 _velocity;
-    public Vector3 Velocity => _velocity;
+    // private Vector3 _velocity;
+    // public Vector3 Velocity => _velocity;
 
     [SerializeField] private InputHandler _inputHandler;
     public InputHandler PlayerInput => _inputHandler;
@@ -54,6 +56,9 @@ public class PlayerMovement : MonoBehaviour, IMovement
     public bool IsJumpFalling => _isJumpFalling;
 
     private float _lerpAmount = 1f;
+
+    private const float DEFAULT_GRAVITY_VALUE = 0.03f;
+    private float _gravityVelocity;
 
     private void Awake()
     {
@@ -89,6 +94,10 @@ public class PlayerMovement : MonoBehaviour, IMovement
             _isJumpFalling = false;
         }
         #endregion
+
+        #region GRAVITY
+        SetGravityScale();
+        #endregion
     }
 
     private void FixedUpdate()
@@ -122,7 +131,8 @@ public class PlayerMovement : MonoBehaviour, IMovement
             RB.velocity = new Vector3(RB.velocity.x, 0, 0);
     }
 
-    public void SetDestination(Vector3 destination) { }
+    // 디자인 패턴인데 나중에 
+    // public void SetDestination(Vector3 destination) { }
 
     public void SetJump()
     {
@@ -149,6 +159,32 @@ public class PlayerMovement : MonoBehaviour, IMovement
             return count > 0;
         }
         return true;
+    }
+
+    private void SetGravityScale()
+    {
+        float gravity = movementData.gravityScale;
+        if(IsGroundDetected())
+        {
+            _gravityVelocity = -DEFAULT_GRAVITY_VALUE;
+        }
+        else
+        {
+            if (_isJumpCut)
+            {
+                gravity *= movementData.jumpCutGravityMult;
+            }
+            else if ((IsJumping || _isJumpFalling) && Mathf.Abs(RB.velocity.y) < movementData.jumpHangTimeThreshold)
+            {
+                gravity *= movementData.jumpHangGravityMult;
+            }
+            else if (RB.velocity.y < 0)
+            {
+                gravity *= movementData.fallGravityMult;
+            }
+            _gravityVelocity += gravity * Time.fixedDeltaTime;
+        }
+        RB.velocity = new Vector3(RB.velocity.x, Mathf.Max(-_gravityVelocity, -movementData.maxFallSpeed), RB.velocity.z);
     }
 
     private void Run(float lerpAmount)
