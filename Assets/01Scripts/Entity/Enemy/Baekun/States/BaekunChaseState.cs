@@ -46,6 +46,6 @@ public class BaekunChaseState : EnemyState<BaekunStateEnum>
     private void SetDestination(Vector3 position)
     {
         _targetDestination = position;
-        _enemy.Movement.SetDestination(position);
+        _enemy.Navigationable.SetDestination(position);
     }
 }

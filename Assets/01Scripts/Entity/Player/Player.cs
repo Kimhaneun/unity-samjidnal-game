@@ -20,6 +20,7 @@ public enum PlayerStateEnum
 
 public class Player : Entity
 {
+    public IDirectMoveable DirectMoveable { get; protected set; }
     // SO를 관리하는 SO 또는 Class를 만들어서 
     // [field: SerializeField] public MovementData movementData { get; protected set; }
     [field: SerializeField] public AttackData attackData { get; protected set; }
@@ -39,6 +40,7 @@ public class Player : Entity
     {
         base.Awake();
         StateMachine = new PlayerStateMachine();
+        DirectMoveable = GetComponent<IDirectMoveable>();
 
         foreach (PlayerStateEnum playerStateEnum in Enum.GetValues(typeof(PlayerStateEnum)))
         {
