@@ -80,7 +80,7 @@ public class PlayerMovement : MonoBehaviour, IMovement, IDirectMoveable
         #endregion
 
         #region JUMP CHECKS
-        if (IsJumping && RB.velocity.y < 0)
+        if (IsJumping && RB.linearVelocity.y < 0)
         {
             IsJumping = false;
 
@@ -113,7 +113,7 @@ public class PlayerMovement : MonoBehaviour, IMovement, IDirectMoveable
 
     public void SetVelocity(float x, float y, float z, bool doNotTurn = true)
     {
-        RB.velocity = new Vector3(x, y, z);
+        RB.linearVelocity = new Vector3(x, y, z);
 
         if (!doNotTurn)
             CheckDirectionToFace(x);
@@ -122,16 +122,16 @@ public class PlayerMovement : MonoBehaviour, IMovement, IDirectMoveable
     public void StopImmediately(bool withAxisY, bool withAxisZ)
     {
         if (withAxisY && withAxisZ)
-            RB.velocity = Vector3.zero;
+            RB.linearVelocity = Vector3.zero;
         else if (withAxisY)
-            RB.velocity = new Vector3(0, 0, RB.velocity.z);
+            RB.linearVelocity = new Vector3(0, 0, RB.linearVelocity.z);
         else if (withAxisZ)
-            RB.velocity = new Vector3(0, RB.velocity.y, 0);
+            RB.linearVelocity = new Vector3(0, RB.linearVelocity.y, 0);
         else
-            RB.velocity = new Vector3(RB.velocity.x, 0, 0);
+            RB.linearVelocity = new Vector3(RB.linearVelocity.x, 0, 0);
     }
 
-    // µðÀÚÀÎ ÆÐÅÏÀÎµ¥ ³ªÁß¿¡ 
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Îµï¿½ ï¿½ï¿½ï¿½ß¿ï¿½ 
     // public void SetDestination(Vector3 destination) { }
 
     public void SetJump()
@@ -174,23 +174,23 @@ public class PlayerMovement : MonoBehaviour, IMovement, IDirectMoveable
             {
                 gravity *= movementData.jumpCutGravityMult;
             }
-            else if ((IsJumping || _isJumpFalling) && Mathf.Abs(RB.velocity.y) < movementData.jumpHangTimeThreshold)
+            else if ((IsJumping || _isJumpFalling) && Mathf.Abs(RB.linearVelocity.y) < movementData.jumpHangTimeThreshold)
             {
                 gravity *= movementData.jumpHangGravityMult;
             }
-            else if (RB.velocity.y < 0)
+            else if (RB.linearVelocity.y < 0)
             {
                 gravity *= movementData.fallGravityMult;
             }
             _gravityVelocity += gravity * Time.fixedDeltaTime;
         }
-        RB.velocity = new Vector3(RB.velocity.x, Mathf.Max(-_gravityVelocity, -movementData.maxFallSpeed), RB.velocity.z);
+        RB.linearVelocity = new Vector3(RB.linearVelocity.x, Mathf.Max(-_gravityVelocity, -movementData.maxFallSpeed), RB.linearVelocity.z);
     }
 
     private void Run(float lerpAmount)
     {
         Vector3 targetSpeed = new Vector3(_inputHandler.MovementDir.x, 0, _inputHandler.MovementDir.z) * movementData.runMaxSpeed;
-        targetSpeed = Vector3.Lerp(new Vector3(RB.velocity.x, 0, RB.velocity.z), targetSpeed, lerpAmount);
+        targetSpeed = Vector3.Lerp(new Vector3(RB.linearVelocity.x, 0, RB.linearVelocity.z), targetSpeed, lerpAmount);
 
         #region Calculate AccelRate
         float accelRate;
@@ -202,7 +202,7 @@ public class PlayerMovement : MonoBehaviour, IMovement, IDirectMoveable
         #endregion
 
         #region Add Bonus Jump Apex Acceleration
-        if ((IsJumping || _isJumpFalling) && Mathf.Abs(RB.velocity.y) < movementData.jumpHangTimeThreshold)
+        if ((IsJumping || _isJumpFalling) && Mathf.Abs(RB.linearVelocity.y) < movementData.jumpHangTimeThreshold)
         {
             accelRate *= movementData.jumpHangAccelerationMult;
             targetSpeed *= movementData.jumpHangMaxSpeedMult;
@@ -210,13 +210,13 @@ public class PlayerMovement : MonoBehaviour, IMovement, IDirectMoveable
         #endregion
 
         #region Conserve Momentum
-        if (movementData.doConserveMomentum && RB.velocity.magnitude > targetSpeed.magnitude && Vector3.Dot(RB.velocity, targetSpeed) > 0 && targetSpeed.magnitude > 0.01f && LastOnGroundTime < 0)
+        if (movementData.doConserveMomentum && RB.linearVelocity.magnitude > targetSpeed.magnitude && Vector3.Dot(RB.linearVelocity, targetSpeed) > 0 && targetSpeed.magnitude > 0.01f && LastOnGroundTime < 0)
         {
             accelRate = 0;
         }
         #endregion
 
-        Vector3 speedDif = targetSpeed - new Vector3(RB.velocity.x, 0, RB.velocity.z);
+        Vector3 speedDif = targetSpeed - new Vector3(RB.linearVelocity.x, 0, RB.linearVelocity.z);
 
         Vector3 movement = speedDif * accelRate;
 
@@ -234,8 +234,8 @@ public class PlayerMovement : MonoBehaviour, IMovement, IDirectMoveable
 
         #region Perform Jump
         float force = movementData.jumpForce;
-        if (RB.velocity.y < 0)
-            force -= RB.velocity.y;
+        if (RB.linearVelocity.y < 0)
+            force -= RB.linearVelocity.y;
 
         RB.AddForce(Vector3.up * force, ForceMode.Impulse);
         #endregion
