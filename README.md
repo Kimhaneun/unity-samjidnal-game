@@ -13,9 +13,9 @@
 
 <br>
 
-- 2024 academic year 2nd grade 1st semester project
+- 2024 academic year 2nd grade 1st semester project.
 - Adventure on an island with 3D terrain in an  pixel graphic environment.
-- A game that knocks down various enemies encountered
+- A game that knocks down various enemies encountered.
 
 <br>
 
@@ -31,4 +31,4 @@
 <br>
 
 ## Learning point
-- Active use of the  interface for multiple inheritance
+- Active use of the  interface for multiple inheritance.
